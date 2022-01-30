@@ -28,7 +28,7 @@ public class ToyDTO {
 
     private String type;
 
-    private Integer size;
+    private Integer toySize;
 
     private String description;
 }

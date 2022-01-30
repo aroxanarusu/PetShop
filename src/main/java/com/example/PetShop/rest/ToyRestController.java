@@ -63,7 +63,7 @@ public class ToyRestController {
 
     @PutMapping("/update-toy/{id}")
     public ResponseEntity<Void> updateToy(@PathVariable Long id, @RequestBody Toy toy) {
-        toyRepository.update(toy.getName(), toy.getColor(), toy.getPetType(), toy.getPrice(), toy.getMaterial(), toy.getWeight(), toy.getType(), toy.getSize(), id);
+        toyRepository.update(toy.getName(), toy.getColor(), toy.getPetType(), toy.getPrice(), toy.getMaterial(), toy.getWeight(), toy.getType(), toy.getToySize(), id);
         return ResponseEntity.ok().build();
     }
 }
