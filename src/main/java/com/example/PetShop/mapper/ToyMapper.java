@@ -7,6 +7,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class ToyMapper {
 
-    public Toy fromDtoToEntity(ToyDTO toyDto) {return new Toy(toyDto.getId(), toyDto.getName(), toyDto.getColor(), toyDto.getPetType(), toyDto.getPrice(), toyDto.getMaterial(),toyDto.getWeight(), toyDto.getType(), toyDto.getToySize());}
+//    public Toy fromDtoToEntity(ToyDTO toyDto) {return new Toy(toyDto.getId(), toyDto.getName(), toyDto.getColor(), toyDto.getPetType(), toyDto.getPrice(), toyDto.getMaterial(),toyDto.getWeight(), toyDto.getType(), toyDto.getToySize());}
     public ToyDTO fromEntityToDto(Toy toy){return new ToyDTO(toy.getId(), toy.getName(), toy.getColor(), toy.getPetType(), toy.getPrice(), toy.getMaterial(),toy.getWeight(), toy.getType(), toy.getToySize(), "Jucarie pentru animale");}
 }

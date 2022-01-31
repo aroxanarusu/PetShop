@@ -22,10 +22,4 @@ public class WalkingAccessory extends Accessory{
     @Column
     private String size;
 
-    public WalkingAccessory(Long id, String name, String color, String petType, Integer price, String material, Integer weight, String type, Integer length, String size) {
-        super(id, name, color, petType, price, material, weight);
-        this.type = type;
-        this.length = length;
-        this.size = size;
-    }
 }

@@ -19,9 +19,4 @@ public class Toy extends Accessory{
     @Column
     private Integer toySize;
 
-    public Toy(Long id, String name, String color, String petType, Integer price, String material, Integer weight, String type, Integer toySize) {
-        super(id, name, color, petType, price, material, weight);
-        this.type = type;
-        this.toySize = toySize;
-    }
 }

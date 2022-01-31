@@ -37,17 +37,4 @@ public class Ingredient {
     @ManyToMany(targetEntity = Food.class, mappedBy = "ingredients", cascade = {CascadeType.PERSIST, CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
     @JsonBackReference
     private List<Food> foods = new ArrayList<>();
-
-    public Ingredient(Long id, String name, Double price, Integer maxTemp, Integer minTemp) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.maxTemp = maxTemp;
-        this.minTemp = minTemp;
-    }
-
-    public void addFoodToIngredient(Food food) {
-        foods.add(food);
-    }
-
 }

@@ -35,6 +35,7 @@ public class BowlRestController {
 
     @GetMapping("/get-bowl/{id}")
     public ResponseEntity<BowlDTO> getBowlById(@PathVariable Long id) {
+        logger.info("Getting bowl with id {}.", id);
         final Optional<Bowl> optionalBowl = bowlRepository.findById(id);
         return optionalBowl.map(bowl -> new ResponseEntity<>(bowlMapper.fromEntityToDto(bowl), HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
@@ -43,6 +44,7 @@ public class BowlRestController {
     @PostMapping("/create-bowl")
     public ResponseEntity<Bowl> createBowl(@RequestBody Bowl bowl) {
         try {
+            logger.info("New bowl has been created.");
             return new ResponseEntity<>(bowlRepository.save(bowl), HttpStatus.OK);
         } catch (DataIntegrityViolationException e) {
             logger.error("DataIntegrityViolationException: bowl {} already exists", bowl.getName());
@@ -53,9 +55,10 @@ public class BowlRestController {
     @DeleteMapping("/delete-bowl/{id}")
     public ResponseEntity<Void> deleteBowl(@PathVariable Long id) {
         try {
+            logger.info("The bowl with id {} has been deleted", id);
             bowlRepository.deleteById(id);
             return ResponseEntity.ok().build();
-        }catch (EmptyResultDataAccessException e) {
+        } catch (EmptyResultDataAccessException e) {
             logger.error("EmptyResultDataAccessException: bowl with id {} doesn't exists", id);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -64,8 +67,15 @@ public class BowlRestController {
 
     @PutMapping("/update-bowl/{id}")
     public ResponseEntity<Void> updateBowl(@PathVariable Long id, @RequestBody Bowl bowl) {
-        bowlRepository.update(bowl.getName(), bowl.getColor(), bowl.getPetType(), bowl.getPrice(), bowl.getMaterial(), bowl.getWeight(), bowl.getVolume(), bowl.getShape(), id);
-        return ResponseEntity.ok().build();
+        final Optional<Bowl> optionalBowl = bowlRepository.findById(id);
+        if (optionalBowl.isPresent()) {
+            bowlRepository.update(bowl.getName(), bowl.getColor(), bowl.getPetType(), bowl.getPrice(), bowl.getMaterial(), bowl.getWeight(), bowl.getVolume(), bowl.getShape(), id);
+            logger.info("The bowl with id {} has been updated", id);
+            return ResponseEntity.ok().build();
+        } else {
+            logger.error("EmptyResultDataAccessException: bowl with id {} doesn't exists", id);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
 }

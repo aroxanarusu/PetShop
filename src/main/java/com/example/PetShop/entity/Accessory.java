@@ -36,21 +36,4 @@ public class Accessory {
 
     @Column
     private Integer weight;
-
-    public Accessory(String name, String color, String petType, Integer price, String material, Integer weight) {
-        this.name = name;
-        this.color = color;
-        this.petType = petType;
-        this.price = price;
-        this.material = material;
-        this.weight = weight;
-    }
-
-    public Accessory(String name, String color, String petType, Integer price, Integer weight) {
-        this.name = name;
-        this.color = color;
-        this.petType = petType;
-        this.price = price;
-        this.weight = weight;
-    }
 }

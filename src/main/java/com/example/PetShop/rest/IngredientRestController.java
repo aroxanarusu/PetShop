@@ -1,12 +1,8 @@
 package com.example.PetShop.rest;
 
-import com.example.PetShop.entity.Bowl;
 import com.example.PetShop.entity.Ingredient;
-import com.example.PetShop.mapper.BowlMapper;
 import com.example.PetShop.mapper.IngredientMapper;
-import com.example.PetShop.repository.BowlRepository;
 import com.example.PetShop.repository.IngredientRepository;
-import com.example.PetShop.rest.model.BowlDTO;
 import com.example.PetShop.rest.model.IngredientDTO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -38,6 +34,7 @@ public class IngredientRestController {
 
     @GetMapping("/get-ingredient/{id}")
     public ResponseEntity<IngredientDTO> getIngredientById(@PathVariable Long id) {
+        logger.info("Getting ingredient with id {}.", id);
         final Optional<Ingredient> optionalIngredient = ingredientRepository.findById(id);
         return optionalIngredient.map(ingredient -> new ResponseEntity<>(ingredientMapper.fromEntityToDto(ingredient), HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
@@ -46,6 +43,7 @@ public class IngredientRestController {
     @PostMapping("/create-ingredient")
     public ResponseEntity<Ingredient> createIngredient(@RequestBody Ingredient ingredient) {
         try {
+            logger.info("New ingredient has been created.");
             return new ResponseEntity<>(ingredientRepository.save(ingredient), HttpStatus.OK);
         } catch (DataIntegrityViolationException e) {
             logger.error("DataIntegrityViolationException: ingredient {} already exists", ingredient.getName());
@@ -56,9 +54,10 @@ public class IngredientRestController {
     @DeleteMapping("/delete-ingredient/{id}")
     public ResponseEntity<Void> deleteIngredient(@PathVariable Long id) {
         try {
+            logger.info("The ingredient with id {} has been deleted", id);
             ingredientRepository.deleteById(id);
             return ResponseEntity.ok().build();
-        }catch (EmptyResultDataAccessException e) {
+        } catch (EmptyResultDataAccessException e) {
             logger.error("EmptyResultDataAccessException: ingredient with id {} doesn't exists", id);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
@@ -67,7 +66,14 @@ public class IngredientRestController {
 
     @PutMapping("/update-ingredient/{id}")
     public ResponseEntity<Void> updateIngredient(@PathVariable Long id, @RequestBody Ingredient ingredient) {
-        ingredientRepository.update(ingredient.getName(), ingredient.getPrice(), ingredient.getMaxTemp(), ingredient.getMinTemp(), id);
-        return ResponseEntity.ok().build();
+        final Optional<Ingredient> optionalIngredient = ingredientRepository.findById(id);
+        if (optionalIngredient.isPresent()) {
+            logger.info("The ingredient with id {} has been updated", id);
+            ingredientRepository.update(ingredient.getName(), ingredient.getPrice(), ingredient.getMaxTemp(), ingredient.getMinTemp(), id);
+            return ResponseEntity.ok().build();
+        } else {
+            logger.error("EmptyResultDataAccessException: ingredient with id {} doesn't exists", id);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

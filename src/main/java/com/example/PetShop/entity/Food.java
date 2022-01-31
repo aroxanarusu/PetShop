@@ -19,7 +19,6 @@ import java.util.Set;
 @ToString
 @Entity
 @Table(name = "Food")
-
 public class Food {
 
     @Id
@@ -42,20 +41,7 @@ public class Food {
     private String petType;
 
     @ManyToMany(targetEntity = Ingredient.class, cascade = {CascadeType.PERSIST, CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
-    @JsonManagedReference
+//    @JsonManagedReference
     private List<Ingredient> ingredients = new ArrayList<>();
 
-    public void addIngerdientToFood(Ingredient ingredient) {
-        ingredients.add(ingredient);
-        ingredient.addFoodToIngredient(this);
-    }
-
-    public Food(Long id, String foodType, String description, Integer weight, String flavour, String petType) {
-        this.id = id;
-        this.foodType = foodType;
-        this.description = description;
-        this.weight = weight;
-        this.flavour = flavour;
-        this.petType = petType;
-    }
 }
